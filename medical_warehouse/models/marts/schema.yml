@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: fct_messages
+    description: "Fact table containing Telegram messages"
+    columns:
+      - name: message_key
+        description: "Surrogate key for each message"
+        tests:
+          - unique
+          - not_null
+      - name: channel_key
+        description: "Foreign key to dim_channels"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_channels')
+              field: channel_key
+      - name: date_key
+        description: "Foreign key to dim_dates"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_dates')
+              field: date_key
+      - name: view_count
+        description: "Number of views"
+        tests:
+          - not_null
+          - expression_is_true: "view_count >= 0"
+      - name: forward_count
+        description: "Number of forwards"
+        tests:
+          - not_null
+          - expression_is_true: "forward_count >= 0"
